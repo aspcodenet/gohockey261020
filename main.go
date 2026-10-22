@@ -13,7 +13,8 @@ import (
 )
 
 func hejHtmlHandler(c *gin.Context) {
-	c.String(200, "<h1>Hej</h1><ul><li>Foppa</li><li>Zäta</li></ul>")
+	c.Data(200, "text/html; charset=utf-8", []byte("<h1>Hej</h1><ul><li>Foppa</li><li>Zäta</li></ul>"))
+	// 	c.Data(http.StatusOK, "text/html; charset=utf-8", []byte("<html><body>Hello</body></html>"))
 }
 
 func getAllPlayersHandler(c *gin.Context) {
