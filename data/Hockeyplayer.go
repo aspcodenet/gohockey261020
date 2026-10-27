@@ -9,6 +9,7 @@ import (
 // koirrekt att det heter struct och inte class
 // struct is a composite data type that groups together variables under a single name
 type HockeyPlayer struct {
+	Id     int
 	Name   string `json:"name"` // struct tags
 	Team   string
 	Number int `json:"Jersey"` // annotera att den ska heta Jersey i json
@@ -57,6 +58,13 @@ func Init() {
 
 	}
 
+}
+
+func GetSinglePlayer(id string) (HockeyPlayer, error) {
+	var player HockeyPlayer
+
+	err := db.First(&player, id).Error
+	return player, err
 }
 
 func GetAllPlayers() []HockeyPlayer {
