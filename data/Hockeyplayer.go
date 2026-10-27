@@ -1,11 +1,17 @@
 package data
 
+import (
+	"github.com/glebarez/sqlite"
+
+	"gorm.io/gorm"
+)
+
 // koirrekt att det heter struct och inte class
 // struct is a composite data type that groups together variables under a single name
 type HockeyPlayer struct {
-	Name   string
+	Name   string `json:"name"` // struct tags
 	Team   string
-	Number int
+	Number int `json:"Jersey"` // annotera att den ska heta Jersey i json
 	Age    int
 }
 
@@ -31,19 +37,32 @@ func (player HockeyPlayer) IsCool() bool {
 	return false
 }
 
+var db *gorm.DB
+
 // slice med alla hockeyspelare
-var players []HockeyPlayer
 
 func Init() {
-	players = []HockeyPlayer{
-		{Name: "John Doe", Team: "Team A", Number: 10, Age: 25},
-		{Name: "Jane Smith", Team: "Team B", Number: 15, Age: 22},
-		{Name: "Mike Johnson", Team: "Team A", Number: 8, Age: 28},
+	db, _ = gorm.Open(sqlite.Open("./gorm.db"), &gorm.Config{})
+	db.AutoMigrate(&HockeyPlayer{}) // CREATE TABLE om det inte finns
+
+	// Seedning
+	var antal int64
+	db.Model(&HockeyPlayer{}).Count(&antal) // select count(*) from HockeyPlayer
+	if antal == 0 {
+
+		db.Create(&HockeyPlayer{Name: "Foppa", Team: "Modo", Number: 21, Age: 53}) // insert into
+
+		db.Create(&HockeyPlayer{Name: "Foppa2", Team: "Modo", Number: 22, Age: 23}) // insert into
+		db.Create(&HockeyPlayer{Name: "Foppa3", Team: "Modo", Number: 23, Age: 33}) // insert into
+
 	}
+
 }
 
 func GetAllPlayers() []HockeyPlayer {
-	return players // på tisdag = vi gör om denna så den hämtar ifrån databas
+	var players []HockeyPlayer
+	db.Find(&players)
+	return players
 }
 
 // OOP nerd - construtor som säkerställer Valid state = mandatory fields

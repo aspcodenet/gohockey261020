@@ -23,8 +23,7 @@ func getAllPlayersHandler(c *gin.Context) {
 
 func main() {
 
-
-	data.Init() // Initialize   players slice with sample data
+	data.Init() // Initialie   players slice with sample data
 
 	r := gin.Default()
 	r.GET("/hej.html", hejHtmlHandler)
