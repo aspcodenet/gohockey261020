@@ -60,6 +60,21 @@ func Init() {
 
 }
 
+func DeletePlayer(player HockeyPlayer) (HockeyPlayer, error) { //
+	err := db.Delete(&player).Error
+	return player, err
+}
+
+func UpdatePlayer(player HockeyPlayer) (HockeyPlayer, error) { //
+	err := db.Save(&player).Error
+	return player, err
+}
+
+func CreatePlayer(player HockeyPlayer) (HockeyPlayer, error) { //
+	err := db.Create(&player).Error
+	return player, err
+}
+
 func GetSinglePlayer(id string) (HockeyPlayer, error) {
 	var player HockeyPlayer
 
