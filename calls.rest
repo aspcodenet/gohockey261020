@@ -22,8 +22,8 @@ POST http://localhost:8080/api/players
 
 ### update existing
 PUT http://localhost:8080/api/players/4
-Content-Type: text/application/json
 
+Content-Type: text/application/json
 {
     "name": "Stefan H"    ,
     "Team": "Modo",
