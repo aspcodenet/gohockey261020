@@ -1,0 +1,14 @@
+# Database credentials
+database:
+  # antingen denna
+  file: "" 
+  # eller alla dessa (om file är blankt)
+  sql-user: "root" 
+  sql-pass: "test"
+  sql-server: "127.0.0.1"
+  sql-database: "SupportSystem"
+  sql-port: 3306
+
+# vi använder inte denna vill bara visa
+redis:
+  server: "localhost:6379"

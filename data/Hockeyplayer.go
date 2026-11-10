@@ -1,8 +1,10 @@
 package data
 
 import (
-	"github.com/glebarez/sqlite"
+	"fmt"
 
+	"github.com/glebarez/sqlite"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
@@ -40,10 +42,28 @@ func (player HockeyPlayer) IsCool() bool {
 
 var db *gorm.DB
 
+func openMySql(server, database, username, password string, port int) *gorm.DB {
+	var url string
+	url = fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+		username, password, server, port, database)
+
+	db, err := gorm.Open(mysql.Open(url), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+	return db
+}
+
 // slice med alla hockeyspelare
 
-func Init() {
-	db, _ = gorm.Open(sqlite.Open("./gorm.db"), &gorm.Config{})
+func Init(file, server, database, username, password string, port int) {
+	//
+	if len(file) == 0 {
+		db = openMySql(server, database, username, password, port)
+	} else {
+		db, _ = gorm.Open(sqlite.Open(file), &gorm.Config{})
+	}
+
 	db.AutoMigrate(&HockeyPlayer{}) // CREATE TABLE om det inte finns
 
 	// Seedning

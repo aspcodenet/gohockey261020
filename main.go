@@ -90,9 +90,18 @@ func createNewPlayer(c *gin.Context) {
 
 }
 
-func main() {
+var config = Config{}
 
-	data.Init() // Initialie   players slice with sample data
+func main() {
+	readConfig(&config)
+	fmt.Printf("%+v", config)
+
+	data.Init(config.Database.File,
+		config.Database.Server,
+		config.Database.Database,
+		config.Database.Username,
+		config.Database.Password,
+		config.Database.Port) // Initialie   players slice with sample data
 
 	r := gin.Default()
 	r.GET("/hej.html", hejHtmlHandler)
