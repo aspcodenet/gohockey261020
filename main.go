@@ -67,6 +67,7 @@ func updatePlayerById(c *gin.Context) {
 }
 
 func createNewPlayer(c *gin.Context) {
+	//sdfsdfsdfsfdsdf
 	// eftersom vi kör REST och JSON så är tanken - en client, typ
 	//{
 	//"name": "Stefan",
