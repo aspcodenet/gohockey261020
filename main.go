@@ -91,6 +91,27 @@ func createNewPlayer(c *gin.Context) {
 
 }
 
+func canIBuyBeerHandler(c *gin.Context) {
+	ageStr := c.Param("age")
+	location := c.Param("location")
+	promilleStr := c.Param("promille")
+
+	age, err := strconv.Atoi(ageStr)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "invalid age"})
+		return
+	}
+
+	promille, err := strconv.ParseFloat(promilleStr, 32)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "invalid promille"})
+		return
+	}
+
+	canBuy := CanIBuyBeer(age, location, float32(promille))
+	c.IndentedJSON(http.StatusOK, gin.H{"canBuy": canBuy})
+}
+
 func main() {
 
 	data.Init() // Initialie   players slice with sample data
@@ -102,6 +123,7 @@ func main() {
 	r.POST("/api/players", createNewPlayer)
 	r.PUT("/api/players/:id", updatePlayerById)
 	r.DELETE("/api/players/:id", deletePlayerById)
+	r.GET("/api/beer/:age/:location/:promille", canIBuyBeerHandler)
 	// Start server on port 8080 (default)
 	// Server will listen on 0.0.0.0:8080 (localhost:8080 on Windows)
 	if err := r.Run(); err != nil {
